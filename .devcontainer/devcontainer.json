@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.194.0/containers/ubuntu
 {
-  "name": "nn_locomotion_unitree",
+  "name": "demo_control_stack",
   "dockerFile": "Dockerfile",
   "remoteUser": "vscode",
   "mounts": [
@@ -9,7 +9,7 @@
   ],
   "runArgs": ["--privileged", "--network=host", "--ipc=host"],
   // Modify the workspaceFolder to match deployment workspace exactly
-  "workspaceFolder": "/home/unitree/nn_loco_ws/nn_locomotion_unitree",
+  "workspaceFolder": "/home/unitree/unitree_ws/demo_control_stack",
   // Modify 'target' to match deployment workspace exactly
-  "workspaceMount": "source=${localWorkspaceFolder},target=/home/unitree/nn_loco_ws/nn_locomotion_unitree,type=bind"
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/unitree/unitree_ws/demo_control_stack,type=bind"
 }

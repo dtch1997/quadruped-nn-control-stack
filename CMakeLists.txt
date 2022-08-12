@@ -16,8 +16,8 @@ find_package(yaml-cpp REQUIRED)
 # Custom packages
 add_subdirectory(interfaces)
 
-add_executable(example_hardware_interface examples/example_hardware_interface.cpp)
+add_executable(example_fake_application examples/example_application.cpp)
 target_link_libraries(
-    example_hardware_interface
+    example_fake_application
     interfaces
 )

@@ -1,9 +1,9 @@
 // Define various types used in abstract interface
 
-#ifndef COMMON__TYPES
-#define COMMON__TYPES
+#ifndef INTERFACES__TYPES
+#define INTERFACES__TYPES
 
-namespace common
+namespace interfaces
 {
     struct ImuState
     {
@@ -26,6 +26,15 @@ namespace common
         JointState knee;
     };
 
+    struct RobotState
+    {
+        LegState FR;
+        LegState FL;
+        LegState RR;
+        LegState RL;
+        ImuState imu;
+    };
+
     struct JointCommand
     {
         double q = 0;   // motor target position
@@ -41,6 +50,15 @@ namespace common
         JointCommand hip;
         JointCommand knee;
     };
-} // namespace dogotix_control
 
-#endif // COMMON__TYPES
+    struct RobotCommand
+    {
+        LegCommand FR;
+        LegCommand FL;
+        LegCommand RR;
+        LegCommand RL;
+    };
+
+} // namespace interfaces
+
+#endif // INTERFACES__TYPES

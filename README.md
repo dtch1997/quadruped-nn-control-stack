@@ -29,7 +29,7 @@ Using this architecture, control and hardware construction and initialization de
     static interfaces::RobotCommand robotCommand;
 ```
 
-The control loop can be compactly defined in about 10 lines of code. 
+A minimal control loop can be compactly defined in about 10 lines of code. 
 
 ```
     // Implement control loop
@@ -47,6 +47,10 @@ The control loop can be compactly defined in about 10 lines of code.
         hardware.write();
     }
 ```
+
+The above control loop serves as a simple base on which to implement other features, e.g.:
+- sleeping for a set time every loop
+- implementing thread-safety with mutexes
 
 ## Roadmap
 

@@ -17,8 +17,15 @@ find_package(yaml-cpp REQUIRED)
 add_subdirectory(interfaces)
 add_subdirectory(hardware)
 
-add_executable(example_fake_application examples/example_application.cpp)
+add_executable(fake_application examples/fake_application.cpp)
 target_link_libraries(
-    example_fake_application
+    fake_application
     interfaces
+)
+
+add_executable(unitree_application examples/unitree_application.cpp)
+target_link_libraries(
+    unitree_application
+    interfaces
+    unitree_sdk
 )

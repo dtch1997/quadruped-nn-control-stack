@@ -4,6 +4,14 @@
 class UnitreeHardware : public interfaces::HardwareInterface
 {
 public:
+    UnitreeHardware( 
+        const UNITREE_LEGGED_SDK::LeggedType& type = UNITREE_LEGGED_SDK::LeggedType::A1, 
+        const uint8_t& level = UNITREE_LEGGED_SDK::LOWLEVEL
+    ): 
+        safe(type), 
+        udp(level)
+    {};
+    
     int start() override; 
     int read() override;
     int write() override; 

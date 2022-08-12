@@ -1,11 +1,12 @@
 #include "unitree_hardware.h"
+#include <sys/mman.h>
 
 #define MAX_STACK_SIZE 16384
 #define TASK_PRIORITY 49 // 49
 
 // Public API
 
-int UnitreeHardware::start() override
+int UnitreeHardware::start()
 {
     running_ = true;
     comm_ready_ = true;
@@ -40,8 +41,8 @@ int UnitreeHardware::read()
         for(uint jindx = 0; jindx<3; jindx++)
         {
             _robot_state.legs[leg].joints[jindx].q = data_.motorState[leg*3+jindx].q;
-            _robot_state.legs[leg].joints[jindx].dq = data_.motorState[leg*3+jindx].dq;
-            _robot_state.legs[leg].joints[jindx].tauEst = data_.motorState[leg*3+jindx].tauEst;
+            _robot_state.legs[leg].joints[jindx].qd = data_.motorState[leg*3+jindx].dq;
+            _robot_state.legs[leg].joints[jindx].tau = data_.motorState[leg*3+jindx].tauEst;
         }
     }
 
@@ -56,7 +57,7 @@ int UnitreeHardware::read()
     }
     for (uint i = 0; i < 3; i++)
     {
-        _robot_state.imu.acc[i] = data_.imu.acceleration[i];
+        _robot_state.imu.acc[i] = data_.imu.accelerometer[i];
     }
 
     return 0;
@@ -70,10 +71,10 @@ int UnitreeHardware::write()
         for(uint jindx = 0; jindx<3; jindx++)
         {
             cmd_.motorCmd[leg*3+jindx].q = _robot_command.legs[leg].joints[jindx].q;
-            cmd_.motorCmd[leg*3+jindx].dq = _robot_command.legs[leg].joints[jindx].dq;
+            cmd_.motorCmd[leg*3+jindx].dq = _robot_command.legs[leg].joints[jindx].qd;
             cmd_.motorCmd[leg*3+jindx].tau = _robot_command.legs[leg].joints[jindx].tau;
-            cmd_.motorCmd[leg*3+jindx].Kp = _robot_command.legs[leg].joints[jindx].Kp;
-            cmd_.motorCmd[leg*3+jindx].Kd = _robot_command.legs[leg].joints[jindx].Kd;
+            cmd_.motorCmd[leg*3+jindx].Kp = _robot_command.legs[leg].joints[jindx].kp;
+            cmd_.motorCmd[leg*3+jindx].Kd = _robot_command.legs[leg].joints[jindx].kd;
         }
     }
 
@@ -126,20 +127,20 @@ void UnitreeHardware::SetInitValue()
     for (uint leg = 0; leg<4; leg++){
         for(uint jindx = 0; jindx<3; jindx++)
         {
-            cmd_buf_.motorCmd[leg*3+jindx].q = 0.0;
-            cmd_buf_.motorCmd[leg*3+jindx].dq = 0.0;
-            cmd_buf_.motorCmd[leg*3+jindx].tau = 0.0;
-            cmd_buf_.motorCmd[leg*3+jindx].Kp = 0.0;
-            cmd_buf_.motorCmd[leg*3+jindx].Kd = 0.0;
+            cmd_.motorCmd[leg*3+jindx].q = 0.0;
+            cmd_.motorCmd[leg*3+jindx].dq = 0.0;
+            cmd_.motorCmd[leg*3+jindx].tau = 0.0;
+            cmd_.motorCmd[leg*3+jindx].Kp = 0.0;
+            cmd_.motorCmd[leg*3+jindx].Kd = 0.0;
         }
     }
 
     for (uint leg = 0; leg<4; leg++){
         for(uint jindx = 0; jindx<3; jindx++)
         {
-            data_buf_.motorState[leg*3+jindx].q = 0.0;
-            data_buf_.motorState[leg*3+jindx].dq = 0.0;
-            data_buf_.motorState[leg*3+jindx].tauEst = 0.0;
+            data_.motorState[leg*3+jindx].q = 0.0;
+            data_.motorState[leg*3+jindx].dq = 0.0;
+            data_.motorState[leg*3+jindx].tauEst = 0.0;
         }
     }
 }

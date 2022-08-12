@@ -7,6 +7,7 @@ namespace interfaces
 {
     struct ImuState
     {
+        // w, x, y, z
         double quad[4] = {0};
         double gyro[3] = {0};
         double acc[3] = {0};
@@ -21,17 +22,19 @@ namespace interfaces
     
     struct LegState
     {
-        JointState abad;
-        JointState hip;
-        JointState knee;
+        // 0 = ab adduction/abduction
+        // 1 = hip flexion/extension
+        // 2 = knee flexion/extension
+        JointState joints[3];
     };
 
     struct RobotState
     {
-        LegState FR;
-        LegState FL;
-        LegState RR;
-        LegState RL;
+        // 0 = FR
+        // 1 = FL
+        // 2 = RR
+        // 3 = RL
+        LegState legs[4];
         ImuState imu;
     };
 
@@ -46,17 +49,19 @@ namespace interfaces
 
     struct LegCommand
     {
-        JointCommand abad;
-        JointCommand hip;
-        JointCommand knee;
+        // 0 = abdominal adduction/abduction
+        // 1 = hip flexion/extension
+        // 2 = knee flexion/extension
+        JointCommand joints[3];
     };
 
     struct RobotCommand
     {
-        LegCommand FR;
-        LegCommand FL;
-        LegCommand RR;
-        LegCommand RL;
+        // 0 = FR
+        // 1 = FL
+        // 2 = RR
+        // 3 = RL
+        LegCommand legs[4];
     };
 
 } // namespace interfaces

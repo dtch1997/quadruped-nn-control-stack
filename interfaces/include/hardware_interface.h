@@ -9,7 +9,7 @@ namespace interfaces
     {
     public:
         virtual int start() = 0;
-        // Read state from hardware into _robotState
+        // Read state from hardware into _robot_state
         virtual int read() = 0;
         // Write command from _robot_command into hardware
         virtual int write() = 0;

@@ -37,7 +37,9 @@ target_link_libraries(
 )
 
 if(${BUILD_WITHOUT_ROS})
+    message("Skipping ros application")
 else()
+    message("Building ros application")
     add_executable(ros_application examples/ros_application.cpp)
     target_link_libraries(
         ros_application

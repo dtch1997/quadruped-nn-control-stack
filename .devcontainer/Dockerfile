@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ros:noetic-ros-base
 
 SHELL ["/bin/bash", "-c"]
 
@@ -22,3 +22,6 @@ RUN sudo apt-get update && sudo apt-get install -y \
   libeigen3-dev \
   libyaml-cpp-dev \
   git
+
+RUN sudo apt update && sudo apt install -y \
+  ros-noetic-

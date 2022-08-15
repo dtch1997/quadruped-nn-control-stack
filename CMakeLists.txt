@@ -10,6 +10,8 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 add_definitions(-std=c++14)
 
+option(BUILD_WITHOUT_ROS "Skip building ROS node" OFF)
+
 find_package (Eigen3 3.3 REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
@@ -33,3 +35,15 @@ target_link_libraries(
     sine_controller
     application
 )
+
+if(${BUILD_WITHOUT_ROS})
+else()
+    add_executable(ros_application examples/ros_application.cpp)
+    target_link_libraries(
+        ros_application
+        interfaces
+        ros_hardware
+        sine_controller
+        application
+    )
+endif()

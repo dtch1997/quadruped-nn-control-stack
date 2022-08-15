@@ -20,7 +20,7 @@ int UnitreeHardware::start()
     udp.InitCmdData(cmd_);
     udp.SetSend(cmd_);
     udp.GetRecv(data_);
-
+    return 0;
     // TODO: Allow some time to warm up
 }
 
@@ -33,6 +33,7 @@ int UnitreeHardware::stop()
 int UnitreeHardware::read() 
 {
     // Update data_;
+    udp.GetRecv(data_);
     udp.Recv();
 
     // Update _robot_state.legs
@@ -82,7 +83,9 @@ int UnitreeHardware::write()
     safe.PositionLimit(cmd_);
     safe.PowerProtect(cmd_, data_, 10);
 
+    printf("[UnitreeHardware] FR knee qDes: %f\n", cmd_.motorCmd[1].q);
     // Send cmd_ to UDP
+    udp.SetSend(cmd_);
     udp.Send();
 
     return 0;

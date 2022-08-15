@@ -7,6 +7,9 @@
 #pragma once
 
 #include <ros/ros.h>
+#include "unitree_legged_msgs/LowCmd.h"
+#include "unitree_legged_msgs/LowState.h"
+
 #include "robot/gazebo_comm.h"
 #include "hardware_interface.h"
 
@@ -19,7 +22,12 @@ public:
     int stop() override;
 
 private:
-    const ros::NodeHandle& nh;
+    ros::NodeHandle* nh;
+    unitree_legged_msgs::LowCmd cmd_;
+    unitree_legged_msgs::LowState data_;
+
+    GazeboCommunicationChannel* gazebo_comm;
+
 };
 
 #endif // HARDWARE__ROS_HARDWARE

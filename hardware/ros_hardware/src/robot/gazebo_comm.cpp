@@ -4,17 +4,14 @@ GazeboCommunicationChannel::GazeboCommunicationChannel (
         std::string _robotName,
         ros::NodeHandle *nh, 
         unitree_legged_msgs::LowCmd* lowCmdPtr, 
-        unitree_legged_msgs::LowState* lowStatePtr,
-        geometry_msgs::Twist* twistPtr
+        unitree_legged_msgs::LowState* lowStatePtr
 )
     : _robotName(_robotName),
       _lowCmd(lowCmdPtr),
-      _lowState(lowStatePtr),
-      _twist(twistPtr)
+      _lowState(lowStatePtr)
 { 
 
     /* Subscriber Initialization */
-    teleop_twist = nh->subscribe("/cmd_vel",1, &GazeboCommunicationChannel::teleopCallback, this);
     imu_sub = nh->subscribe("/trunk_imu", 1, &GazeboCommunicationChannel::imuCallback, this);
     footForce_sub[legged_robot::FL_] = nh->subscribe("/visual/FL_foot_contact/the_force", 1, &GazeboCommunicationChannel::FLfootCallback, this);
     footForce_sub[legged_robot::FR_] = nh->subscribe("/visual/FR_foot_contact/the_force", 1, &GazeboCommunicationChannel::FRfootCallback, this);
@@ -64,14 +61,6 @@ void GazeboCommunicationChannel::sendServoCmd()
 void GazeboCommunicationChannel::pubLowState()
 {
     lowState_pub.publish(*_lowState);
-}
-
-// Call Back functions 
-void GazeboCommunicationChannel::teleopCallback(const geometry_msgs::Twist& msg)
-{
-    _twist->linear.x = msg.linear.x;
-    _twist->linear.y = msg.linear.y;
-    _twist->angular.z = msg.angular.z;
 }
 
 void GazeboCommunicationChannel::imuCallback(const sensor_msgs::Imu & msg)

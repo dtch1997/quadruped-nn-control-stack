@@ -21,26 +21,21 @@ private:
     unitree_legged_msgs::LowState* _lowState = nullptr;
 
     /* Subscribers and Publishers */
-    ros::Subscriber servo_sub[12], footForce_sub[4], imu_sub, teleop_twist;
+    ros::Subscriber servo_sub[12], footForce_sub[4], imu_sub;
     ros::Publisher servo_pub[12], lowState_pub;
 
     /* To Prevent copying of the class */
     GazeboCommunicationChannel(const GazeboCommunicationChannel& );
     GazeboCommunicationChannel& operator=(const GazeboCommunicationChannel&);
-
-    /* Teleop input */
-    geometry_msgs::Twist* _twist;
     
     std::string _robotName;
-
     
 public:
     GazeboCommunicationChannel(
         std::string robotName, 
         ros::NodeHandle *nh, 
         unitree_legged_msgs::LowCmd *lowCmdPtr, 
-        unitree_legged_msgs::LowState *lowStatePtr, 
-        geometry_msgs::Twist* twistPtr
+        unitree_legged_msgs::LowState *lowStatePtr
     );
     ~GazeboCommunicationChannel();
 
@@ -49,7 +44,6 @@ public:
     void pubLowState();
 
     /* Subscriber Call-back functions for _lowState */
-    void teleopCallback(const geometry_msgs::Twist& msg);
     void imuCallback(const sensor_msgs::Imu & msg);
     void FRhipCallback(const unitree_legged_msgs::MotorState& msg);
     void FRthighCallback(const unitree_legged_msgs::MotorState& msg);

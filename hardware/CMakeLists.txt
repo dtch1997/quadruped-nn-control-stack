@@ -1,2 +1,3 @@
+# add_subdirectory(ros_hardware)
 add_subdirectory(unitree_hardware)
 add_subdirectory(ideal_hardware)

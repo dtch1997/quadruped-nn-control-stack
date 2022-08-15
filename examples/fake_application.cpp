@@ -1,3 +1,6 @@
+/* An example to demonstrate basic control loop with HardwareInterface and ControllerInterface
+ */ 
+
 #include "types.h"
 #include "hardware_interface.h"
 #include "controller_interface.h"

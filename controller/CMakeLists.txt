@@ -1,1 +1,2 @@
-add_subdirectory(standup_controller)
+add_subdirectory(sine_controller)
+# add_subdirectory(standup_controller)

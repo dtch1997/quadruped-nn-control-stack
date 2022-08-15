@@ -83,7 +83,9 @@ int UnitreeHardware::write()
     safe.PositionLimit(cmd_);
     safe.PowerProtect(cmd_, data_, 10);
 
-    printf("[UnitreeHardware] FR knee qDes: %f\n", cmd_.motorCmd[1].q);
+    // For debugging:
+    // printf("[UnitreeHardware] FR knee qDes: %f\n", cmd_.motorCmd[1].q);
+    
     // Send cmd_ to UDP
     udp.SetSend(cmd_);
     udp.Send();

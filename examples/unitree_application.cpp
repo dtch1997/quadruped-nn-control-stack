@@ -7,23 +7,15 @@
 #include <iostream>
 #include "utils.h"
 
+#include <chrono>
+#include <thread>
+
 int main(int argc, char* argv[]) {
 
-    interfaces::ControllerInterface* controller;
-    interfaces::HardwareInterface* hardware;
+    interfaces::ControllerInterface* controller = new SineController();
+    interfaces::HardwareInterface* hardware = new UnitreeHardware();
     int num_iters;
-
-    char * arg_controller_name = getCmdOption(argv, argv+argc, "--controller");
-    if (arg_controller_name == nullptr) 
-    {
-        controller = new SineController();
-    }
-    
-    char * arg_hardware_name = getCmdOption(argv, argv+argc, "--hardware");
-    if (arg_hardware_name == nullptr)
-    {
-        hardware = new UnitreeHardware();
-    }
+    int loop_time_ms;
 
     char * arg_num_iters = getCmdOption(argv, argv+argc, "--num-iters");
     if (arg_num_iters == nullptr)
@@ -35,6 +27,16 @@ int main(int argc, char* argv[]) {
         num_iters = std::stoi(arg_num_iters);
     }
 
+    char * arg_loop_time_ms = getCmdOption(argv, argv+argc, "--dt-ms");
+    if (arg_loop_time_ms== nullptr)
+    {
+        loop_time_ms = 2;
+    }
+    else
+    {
+        loop_time_ms = std::stoi(arg_loop_time_ms);
+    }
+
     hardware->start();
     controller->start();
 
@@ -42,9 +44,12 @@ int main(int argc, char* argv[]) {
     static interfaces::RobotState robotState; 
     static interfaces::RobotCommand robotCommand;
 
+
+    auto start = std::chrono::system_clock::now();
     // Demo control loop
     for (int i =0; i < num_iters; i ++) 
     {
+        auto loop_start = std::chrono::system_clock::now();
         hardware->read();
         hardware->getRobotState(robotState);
         controller->setRobotState(robotState);
@@ -52,8 +57,9 @@ int main(int argc, char* argv[]) {
         controller->getRobotCommand(robotCommand);
         hardware->setRobotCommand(robotCommand);
         hardware->write();
-        std::cout << "FR hip, knee qDes: " << robotCommand.legs[0].joints[1].q << " " << robotCommand.legs[0].joints[2].q << std::endl;
-        std::cout << "Unitree application loop: " << i << std::endl;
+        auto time_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start - start).count();
+        std::cout << "Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
+        std::this_thread::sleep_until(loop_start + std::chrono::milliseconds(loop_time_ms));
     }
 
     hardware->stop();

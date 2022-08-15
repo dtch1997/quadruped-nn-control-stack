@@ -58,13 +58,13 @@ int main(int argc, char* argv[]) {
         hardware->setRobotCommand(robotCommand);
         hardware->write();
         auto time_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start - start).count();
-        std::cout << "Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
+        std::cout << "[UnitreeApp] Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
         std::this_thread::sleep_until(loop_start + std::chrono::milliseconds(loop_time_ms));
     }
 
     hardware->stop();
     controller->stop();
-    std::cout << "Unitree application terminated." << std::endl;
+    std::cout << "[UnitreeApp] Unitree application terminated." << std::endl;
 
     return 0;
 }

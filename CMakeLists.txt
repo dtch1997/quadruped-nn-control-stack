@@ -42,6 +42,16 @@ else()
     find_library(ros_hardware REQUIRED)
     message("Building ros application")
     add_executable(ros_application examples/ros_application.cpp)
+    target_include_directories(ros_application PUBLIC 
+        "include" 
+        /opt/ros/noetic/include 
+        /opt/ros/noetic/lib
+    )
+    target_link_directories(ros_application PUBLIC 
+        "include" 
+        /opt/ros/noetic/include 
+        /opt/ros/noetic/lib
+    )
     target_link_libraries(
         ros_application
         interfaces

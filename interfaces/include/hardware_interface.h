@@ -8,12 +8,12 @@ namespace interfaces
     class HardwareInterface
     {
     public:
-        virtual int start() = 0;
+        virtual int start() {};
         // Read state from hardware into _robot_state
         virtual int read() = 0;
         // Write command from _robot_command into hardware
         virtual int write() = 0;
-        virtual int stop() = 0;
+        virtual int stop() {};
 
         void getRobotState(RobotState& state) const 
         {
@@ -22,6 +22,11 @@ namespace interfaces
         void setRobotCommand(const RobotCommand& cmd) 
         {
             _robot_command = cmd;
+        };
+
+        ~HardwareInterface()
+        {
+            stop();
         };
 
     protected:

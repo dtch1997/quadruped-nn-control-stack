@@ -12,8 +12,11 @@
 
 int main(int argc, char* argv[]) {
 
+    ros::init(argc, argv, "ros_hardware");
+    ros::NodeHandle nh;
+
     interfaces::ControllerInterface* controller = new SineController();
-    interfaces::HardwareInterface* hardware = new RosHardware();
+    interfaces::HardwareInterface* hardware = new RosHardware(&nh);
     int num_iters;
     int loop_time_ms;
 
@@ -36,17 +39,18 @@ int main(int argc, char* argv[]) {
     {
         loop_time_ms = std::stoi(arg_loop_time_ms);
     }
-
+    std::cout << "[RosApp] Starting ros hardware" << std::endl;
     hardware->start();
+    std::cout << "[RosApp] Ros hardware started" << std::endl;
     controller->start();
 
     // Initialize static memory
     static interfaces::RobotState robotState; 
     static interfaces::RobotCommand robotCommand;
 
-
     auto start = std::chrono::system_clock::now();
     // Demo control loop
+    std::cout << "[RosApp] Starting loop" << std::endl;
     for (int i =0; i < num_iters; i ++) 
     {
         auto loop_start = std::chrono::system_clock::now();
@@ -58,13 +62,13 @@ int main(int argc, char* argv[]) {
         hardware->setRobotCommand(robotCommand);
         hardware->write();
         auto time_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start - start).count();
-        std::cout << "[UnitreeApp] Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
+        std::cout << "[RosApp] Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
         std::this_thread::sleep_until(loop_start + std::chrono::milliseconds(loop_time_ms));
     }
 
     hardware->stop();
     controller->stop();
-    std::cout << "[UnitreeApp] Unitree application terminated." << std::endl;
+    std::cout << "[RosApp] Ros application terminated." << std::endl;
 
     return 0;
 }

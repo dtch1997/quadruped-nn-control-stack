@@ -5,11 +5,13 @@ int RosHardware::start()
     gazebo_comm = new GazeboCommunicationChannel(
         "a1", nh, &cmd_, &data_
     );
+    return 0;
 }
 
 int RosHardware::stop()
 {
     delete gazebo_comm;
+    return 0;
 }
 
 int RosHardware::read() 
@@ -40,6 +42,7 @@ int RosHardware::read()
     {
         _robot_state.imu.acc[i] = data_.imu.accelerometer[i];
     }
+    return 0;
 }
 
 int RosHardware::write() 

@@ -16,6 +16,8 @@
 class RosHardware : public interfaces::HardwareInterface
 {
 public:
+    RosHardware(ros::NodeHandle* nh): nh(nh) {};
+
     int start() override; 
     int read() override;
     int write() override; 

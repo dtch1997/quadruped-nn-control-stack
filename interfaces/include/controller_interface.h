@@ -17,7 +17,7 @@ namespace interfaces
         {
             _robot_state = state;
         };
-        RobotCommand getRobotCommand(RobotCommand& cmd) const
+        void getRobotCommand(RobotCommand& cmd) const
         {
             cmd = _robot_command;
         };

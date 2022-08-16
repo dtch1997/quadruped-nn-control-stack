@@ -9,11 +9,20 @@
 
 #include <chrono>
 #include <thread>
+#include <signal.h>
 
-int main(int argc, char* argv[]) {
+void mySigintHandler(int sig)
+{
+    ros::shutdown();
+    exit(0);
+}
 
-    ros::init(argc, argv, "ros_hardware");
+int main(int argc, char* argv[]) 
+{
+
+    ros::init(argc, argv, "ros_hardware", ros::init_options::NoSigintHandler);
     ros::NodeHandle nh;
+    signal(SIGINT, mySigintHandler);
 
     interfaces::ControllerInterface* controller = new SineController();
     interfaces::HardwareInterface* hardware = new RosHardware(&nh);
@@ -54,13 +63,17 @@ int main(int argc, char* argv[]) {
     for (int i =0; i < num_iters; i ++) 
     {
         auto loop_start = std::chrono::system_clock::now();
+        
         hardware->read();
+        ros::spinOnce();
         hardware->getRobotState(robotState);
         controller->setRobotState(robotState);
         controller->step_control();
         controller->getRobotCommand(robotCommand);
         hardware->setRobotCommand(robotCommand);
         hardware->write();
+        ros::spinOnce();
+
         auto time_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start - start).count();
         std::cout << "[RosApp] Loop: " << i << " | Time: " << time_elapsed << " ms" << std::endl;
         std::this_thread::sleep_until(loop_start + std::chrono::milliseconds(loop_time_ms));

@@ -16,8 +16,6 @@ int RosHardware::stop()
 
 int RosHardware::read() 
 {
-    ros::spinOnce();
-
     // Update _robot_state.legs
     for (uint leg = 0; leg<4; leg++)
     {
@@ -43,6 +41,8 @@ int RosHardware::read()
         _robot_state.imu.acc[i] = data_.imu.accelerometer[i];
     }
     return 0;
+    
+    gazebo_comm->pubLowState();
 }
 
 int RosHardware::write() 
@@ -60,7 +60,7 @@ int RosHardware::write()
         }
     }
 
-    ros::spinOnce();
+    gazebo_comm->sendServoCmd();
 
     return 0;
 }  

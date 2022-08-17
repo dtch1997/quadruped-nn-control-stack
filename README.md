@@ -85,6 +85,8 @@ It is recommended to adhere to the interfaces provided:
 
 `examples/fake_application` demonstrates how to implement a simple application with dummy controller and hardware.
 
+`examples/ros_application` demonstrates implementing an application that requires communication over ROS channels. 
+
 ### Compiling
 
 All three example applications can be built and compiled in the provided Docker environment. It is convenient to use VSCode Remote Containers extension for this purpose
